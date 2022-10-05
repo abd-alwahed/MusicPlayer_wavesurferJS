@@ -11,7 +11,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function Waveform({ url, img, title }) {
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
-  const { playing, setPlaying, volume, setVolume } = useWaveSurfer({
+
+  const {
+    playing,
+    leftGain,
+    rightGain,
+    setPlaying,
+    volume,
+    setVolume,
+    panner,
+    setPanner,
+  } = useWaveSurfer({
     url,
     waveformRef,
     wavesurfer,
@@ -35,7 +45,19 @@ export default function Waveform({ url, img, title }) {
       wavesurfer.current.setVolume(newVolume || 1);
     }
   };
+  const onPannerChange = (e) => {
+    setPanner(+e.target.value);
+    wavesurfer.current.panner.pan.value = panner;
+  };
 
+  const onLeftVolumeChange = (e) => {
+    const _volume = +e.target.value;
+    leftGain.gain.value = _volume;
+  };
+  const onRightVolumeChange = (e) => {
+    const _volume = +e.target.value;
+    rightGain.gain.value = _volume;
+  };
   return (
     <div
       className="card m-auto mt-3"
@@ -94,6 +116,49 @@ export default function Waveform({ url, img, title }) {
               onChange={onVolumeChange}
               defaultValue={volume}
             />
+          </div>
+          <div className=" d-flex flex-row ">
+            <span>left</span>
+            <input
+              className="form-range form-range-track-bg-dark "
+              type="range"
+              id="panner"
+              name="panner"
+              min="-1"
+              max="1"
+              step=".25"
+              onChange={onPannerChange}
+              defaultValue={panner}
+            />
+            <span>right</span>
+          </div>
+          <div className=" d-flex flex-row ">
+            <span>right</span>
+            <input
+              className="form-range form-range-track-bg-dark "
+              type="range"
+              id="leftVolume"
+              name="leftVolume"
+              min="0.0"
+              max="1"
+              step=".025"
+              defaultValue="0.5"
+              onChange={onLeftVolumeChange}
+            />
+          </div>
+          <div className=" d-flex flex-row ">
+            <input
+              className="form-range form-range-track-bg-dark "
+              type="range"
+              id="rightVolume"
+              name="rightVolume"
+              min="0.0"
+              max="1"
+              step=".025"
+              defaultValue="0.5"
+              onChange={onRightVolumeChange}
+            />
+            <span>left</span>
           </div>
         </div>
       </div>
