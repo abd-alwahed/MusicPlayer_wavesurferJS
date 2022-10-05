@@ -26,6 +26,6 @@ export const useWaveSurfer = ({ url, wavesurfer, waveformRef }) => {
     });
 
     return () => wavesurfer.current.destroy();
-  }, [url]);
+  }, [url, volume, waveformRef, wavesurfer]);
   return { volume, setVolume, playing, setPlaying };
 };
