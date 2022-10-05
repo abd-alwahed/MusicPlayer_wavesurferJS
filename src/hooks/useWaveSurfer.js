@@ -31,11 +31,12 @@ export const useWaveSurfer = ({ url, wavesurfer, waveformRef }) => {
       _waveSurfer.panner,
     ]);
     wavesurfer.current = _waveSurfer;
-
-    let audio = document.createElement("audio");
-    audio.src = url;
-    audio.crossOrigin = "anonymous";
-    wavesurfer.current.load(audio);
+    fetch(url)
+      .then((E) => E.blob())
+      .then((e) => {
+        console.log(e);
+        wavesurfer.current.loadBlob(e);
+      });
     wavesurfer?.current?.on("ready", function () {
       if (wavesurfer?.current) {
         wavesurfer.current.setVolume(volume);

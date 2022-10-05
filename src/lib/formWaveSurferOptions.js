@@ -10,5 +10,4 @@ export const formWaveSurferOptions = (ref) => ({
   height: 50,
   splitChannels: true,
   normalize: true,
-  backend: "MediaElementWebAudio",
 });
