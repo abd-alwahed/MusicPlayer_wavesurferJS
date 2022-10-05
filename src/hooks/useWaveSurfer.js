@@ -34,7 +34,6 @@ export const useWaveSurfer = ({ url, wavesurfer, waveformRef }) => {
     fetch(url)
       .then((E) => E.blob())
       .then((e) => {
-        console.log(e);
         wavesurfer.current.loadBlob(e);
       });
     wavesurfer?.current?.on("ready", function () {
