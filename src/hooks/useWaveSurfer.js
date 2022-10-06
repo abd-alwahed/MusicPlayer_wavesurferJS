@@ -1,7 +1,7 @@
 import { formWaveSurferOptions } from "../lib/formWaveSurferOptions";
 import WaveSurfer from "wavesurfer.js";
 import { useEffect, useState } from "react";
-
+import axios from "axios";
 export const useWaveSurfer = ({ url, wavesurfer, waveformRef }) => {
   const [playing, setPlaying] = useState(false);
   const [volume, setVolume] = useState(0.5);
@@ -31,9 +31,10 @@ export const useWaveSurfer = ({ url, wavesurfer, waveformRef }) => {
       _waveSurfer.panner,
     ]);
     wavesurfer.current = _waveSurfer;
-    fetch(url)
-      .then((E) => E.blob())
+    axios(url, { responseType: "blob" })
+      .then((E) => E.data)
       .then((e) => {
+        console.log(e);
         wavesurfer.current.loadBlob(e);
       });
     wavesurfer?.current?.on("ready", function () {
@@ -41,10 +42,8 @@ export const useWaveSurfer = ({ url, wavesurfer, waveformRef }) => {
         wavesurfer.current.setVolume(volume);
       }
     });
-
     setLeftGain(leftGainNode);
     setRightGain(rightGainNode);
-
     return () => {
       return wavesurfer.current.destroy();
     };
